@@ -1,0 +1,28 @@
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  /* width: 100%; */
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+td {
+  /* width: 50%; */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+td.url {
+  max-width: 40vw;
+}
+
+td.title {
+  max-width: 50vw;
+}
+
+td.id {
+  max-width: 10vw;
+}

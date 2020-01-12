@@ -1,0 +1,38 @@
+{
+  "manifest_version": 2,
+  "name": "Tabs Manager",
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
+  "version": "0.0.1",
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js",
+        "script.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "commands": {
+    "search-tabs": {
+      "suggested_key": {
+        "default": "Ctrl+M",
+        "mac": "Command+M"
+      },
+      "description": "Search for Tabs"
+    }
+  }
+}
