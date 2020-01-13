@@ -26,3 +26,85 @@ td.title {
 td.id {
   max-width: 10vw;
 }
+
+
+body {
+  width: 320px;
+  height: 480px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.title {
+  margin-left: 8px;
+}
+
+.pages-list {
+  padding: 0px;
+}
+
+.pages-list > li {
+  display: flex;
+  align-items: center;
+  padding: 0px 8px;
+  cursor: pointer;
+}
+
+.pages-list > li:hover {
+  background-color: #F5F5F5;
+}
+
+.pages-list > li:active {
+  background-color: #EEE;
+}
+
+.pages-list > li h3, .pages-list > li h4{
+  color: #333333;
+  margin: 0px;
+}
+
+.pages-list > li h3{
+  letter-spacing: 0.04em;
+}
+
+.pages-list > li h4{
+  color: #33333399;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.pages-list > li div {
+  width: 300px;
+  border-bottom: 1px solid #00000025;
+  padding: 8px 8px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+
+.pages-list > li img {
+  width: 36px;
+  height: 36px;
+  margin-right: 12px;
+  box-shadow: 2px 2px 8px #33333333;
+}
+
+.text-input {
+  outline: none;
+  height: 32px;
+  border-radius: 8px;
+  background-color: #00000017;
+  border: none;
+  padding-left: 12px;
+  width: 80%;
+  margin: 0 8px 4px 8px;
+}
+
+.text-input:hover {
+  background-color: #00000015;
+}
+
+.text-input:active {
+  background-color: #00000020;
+}
