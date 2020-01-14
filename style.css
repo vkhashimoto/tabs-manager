@@ -87,7 +87,7 @@ body::-webkit-scrollbar-thumb {
   border-radius: 4px;
 }
 
-.pages-list > li:hover {
+.pages-list > li:hover, .pages-list > li.select {
   background-color: #F5F5F5;
 }
 
