@@ -1,0 +1,1 @@
+document.getElementById("pages-list-id").innerHTML = "<li> <div class='img' style='background-image: url(icon.png);'></div> <div><h3>Page Title</h3><h4>www.google.com.br/vini-otariohasuhsahuhdhsaudhduadsadh</h4></div></li>"
