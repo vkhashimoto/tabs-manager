@@ -1,5 +1,6 @@
 var chromePages = [];
 var result = [];
+var selectedRow = 0;
 
 const pagesList = document.getElementById("pages-list-id");
 
@@ -8,21 +9,46 @@ const input = document.getElementById("searchBar");
 
 // update the list every input made by the user
 input.addEventListener("input", (e) => {
+  selectedRow = 0;
   clearList();
   let searchTerm = e.target.value.toUpperCase();
-  result = chromePages.filter(page => page.pageTitle.toUpperCase().includes(searchTerm));
-  populate(result);
+  populate(chromePages.filter(page => page.pageTitle.toUpperCase().includes(searchTerm)));
 });
 
 // pressed enter
 document.addEventListener('keyup', (e) => {
-  if (e.keyCode === 13) {
-    if (result.length == 1) {
-      getTabFocus(result[0]);
-    }
+  switch (e.keyCode) {
+    case 13:
+      getTabFocus(result[selectedRow]);
+      break;
+    case 38:
+      rowSelector("up");
+      break;
+    case 40:
+      rowSelector("down");
+      break
   }
 });
 
+function rowSelector(dir) {
+  let rowCount = document.getElementsByTagName("li").length - 1;
+  let lastSelected = selectedRow;
+  if (dir === "up") {
+    if (selectedRow == 0) selectedRow = rowCount;
+    else selectedRow--;
+  } else if (dir === "down") {
+    if (selectedRow == rowCount) selectedRow = 0;
+    else selectedRow++;
+  }
+
+  selectRow(selectedRow, lastSelected);
+}
+
+function selectRow(index, lastSelected) {
+  let rows = document.getElementsByTagName("li");
+  rows[lastSelected].classList.remove("select");
+  rows[index].classList.add("select");
+}
 
 function getTabFocus({ tabId, windowId }) {
   chrome.tabs.update(parseInt(tabId), { active: true });
@@ -49,6 +75,8 @@ chrome.windows.getAll({ populate: true }, function (windows) {
     });
   });
   populate(chromePages);
+  // when open the popup, the first item is selected
+  selectRow(selectedRow, 1);
 });
 
 function createListItem({ pageTitle, icon, link }) {
@@ -67,6 +95,7 @@ function clearList() {
 }
 
 function populate(pages) {
+  result = pages;
   pages.forEach(page => createListItem(page));
 
 }
