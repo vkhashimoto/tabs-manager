@@ -1,22 +1,49 @@
-var database = [{"pageTitle": "Google"},{"pageTitle": "Youtube"},{"pageTitle": "Batata doce"},{"pageTitle": "Medium - Artigo"},];
+var chromePages = []
+
 const pagesList = document.getElementById("pages-list-id");
 
 
-database.map(object => createListItem(object.pageTitle));
+const input = document.getElementById("searchBar");
 
-// database.filter(a => a.pageTitle === 'Google');
+// update the list every input made by the user
+input.addEventListener("input", (e) => {
+  clearList();
+  let searchTerm = e.target.value.toUpperCase();
+  let result = chromePages.filter(page => page.pageTitle.toUpperCase().includes(searchTerm));
+  populate(result);
+});
 
-function createListItem(pageTitle) {
-    var li = document.createElement("LI");
-    li.innerHTML = `
-        <div class='img' style='background-image: url(icon.png);'></div> 
+chrome.windows.getAll({ populate: true }, function (windows) {
+  windows.forEach((window) => {
+    window.tabs.forEach((tab) => {
+      chromePages.push({
+        "pageTitle": tab.title,
+        "link": tab.url,
+        "icon": tab.favIconUrl,
+        "tabId": tab.id,
+        "windowId": tab.windowId
+      });
+    });
+  });
+  populate(chromePages);
+});
+
+function createListItem({ pageTitle, icon, link }) {
+  var li = document.createElement("LI");
+  li.innerHTML = `
+        <div class='img' style='background-image: url(${icon});'></div> 
         <div>
             <h3>${pageTitle}</h3>
-            <h4>www.google.com.br/vini-otariohasuhsahuhdhsaudhduadsadh</h4>
+            <h4>${link}</h4>
          </div>`;
-    pagesList.appendChild(li);
+  pagesList.appendChild(li);
 }
 
+function clearList() {
+  pagesList.innerHTML = "";
+}
 
+function populate(pages) {
+  pages.forEach(page => createListItem(page));
 
-// document.getElementById("pages-list-id").innerHTML = "<li> <div class='img' style='background-image: url(icon.png);'></div> <div><h3>Page Title</h3><h4>www.google.com.br/vini-otariohasuhsahuhdhsaudhduadsadh</h4></div></li>"
+}
