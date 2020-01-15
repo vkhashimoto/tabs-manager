@@ -29,7 +29,7 @@ function newWindow() {
     left: Math.round(maxWidth / 4),
     top: Math.round(maxHeight / 4),
     width: Math.round(maxWidth / 2),
-    height: Math.round(maxHeight / 2),
+    height: Math.round(maxHeight / 1.5),
     focused: true
   };
   chrome.windows.create(createData, (window) => {

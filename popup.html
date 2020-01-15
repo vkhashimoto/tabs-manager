@@ -5,24 +5,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-  <h1 id="title">Tabs Manager</h1>
-  <input id="searchBar" autofocus></input>
-  <table id="table">
-    <tbody id="tableBody">
-      <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>URL</th>
-      </tr>
-    </tbody>
-  </table>
+  <div class="title-container">
+    <h1 class="title" id="title">Tabs Manager</h1>
+    <h4 class="subtitle">Você também pode buscar uma página pressionando o atalho Ctrl + M</h4>
+    <div class="text-input-container">
+      <input class="text-input" id="searchBar" placeholder="Buscar aba" autofocus></input>
+      <img class="text-input-img" src="search-icon.svg" />
+    </div>
+  </div> 
+  <ul id="pages-list-id" class="pages-list">
+  </ul>
 
-  <script src="script.js"></script>
+  <script src="script2.js"></script>
 </body>
 
 </html>
