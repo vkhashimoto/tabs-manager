@@ -1,4 +1,5 @@
-var chromePages = []
+var chromePages = [];
+var result = [];
 
 const pagesList = document.getElementById("pages-list-id");
 
@@ -9,10 +10,32 @@ const input = document.getElementById("searchBar");
 input.addEventListener("input", (e) => {
   clearList();
   let searchTerm = e.target.value.toUpperCase();
-  let result = chromePages.filter(page => page.pageTitle.toUpperCase().includes(searchTerm));
+  result = chromePages.filter(page => page.pageTitle.toUpperCase().includes(searchTerm));
   populate(result);
 });
 
+// pressed enter
+document.addEventListener('keyup', (e) => {
+  if (e.keyCode === 13) {
+    if (result.length == 1) {
+      getTabFocus(result[0]);
+    }
+  }
+});
+
+
+function getTabFocus({ tabId, windowId }) {
+  chrome.tabs.update(parseInt(tabId), { active: true });
+  chrome.windows.update(parseInt(windowId), { focused: true });
+  closePopupWindows();
+}
+
+function closePopupWindows() {
+  chrome.storage.local.get(["popupWindowId"], function (result) {
+    chrome.storage.local.remove(["popupWindowId"]);
+    chrome.windows.remove(parseInt(result.popupWindowId));
+  });
+}
 chrome.windows.getAll({ populate: true }, function (windows) {
   windows.forEach((window) => {
     window.tabs.forEach((tab) => {
