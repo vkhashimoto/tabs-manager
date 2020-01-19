@@ -82,7 +82,7 @@ chrome.windows.getAll({ populate: true }, function (windows) {
   selectRow(selectedRow, 1);
 });
 
-function createListItem({ pageTitle, icon, link }) {
+function createListItem({ pageTitle, icon, link }, resultIndex) {
   var li = document.createElement("LI");
   li.innerHTML = `
         <div class='img' style='background-image: url(${icon});'></div> 
@@ -90,6 +90,9 @@ function createListItem({ pageTitle, icon, link }) {
             <h3>${pageTitle}</h3>
             <h4>${link}</h4>
          </div>`;
+  li.addEventListener('click', function (event) {
+    openOnClick(resultIndex);
+  });
   pagesList.appendChild(li);
 }
 
@@ -99,6 +102,9 @@ function clearList() {
 
 function populate(pages) {
   result = pages;
-  pages.forEach(page => createListItem(page));
+  pages.forEach((page, index) => createListItem(page, index));
+}
 
+function openOnClick(resultIndex) {
+  getTabFocus(result[resultIndex]);
 }
