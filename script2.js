@@ -27,6 +27,9 @@ document.addEventListener('keyup', (e) => {
     case 40:
       rowSelector("down");
       break
+    case 27:
+      closePopupWindows();
+      break;
   }
 });
 
