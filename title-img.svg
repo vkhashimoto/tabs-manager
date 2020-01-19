@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128.455" height="24" viewBox="0 0 128.455 24">
+  <g id="title-img" transform="translate(-269.545 202)">
+    <text id="Tab_Manager" data-name="Tab Manager" transform="translate(292 -183)" fill="#fff" font-size="18" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Tab Manager</tspan></text>
+    <g id="Grupo_7" data-name="Grupo 7" transform="translate(90.51 17.181)">
+      <g id="Grupo_5" data-name="Grupo 5" transform="translate(179.034 -206.13)">
+        <g id="Grupo_3" data-name="Grupo 3" transform="translate(0 0)">
+          <path id="União_1" data-name="União 1" d="M11.472,6.414v-1.6H0V2.139H11.472V.535a.534.534,0,0,1,.854-.428l3.916,2.939a.535.535,0,0,1,0,.855L12.326,6.841a.526.526,0,0,1-.318.108A.534.534,0,0,1,11.472,6.414Z" transform="translate(0)" fill="#fff"/>
+        </g>
+      </g>
+      <g id="Grupo_6" data-name="Grupo 6" transform="translate(179.034 -214.004)">
+        <g id="Grupo_3-2" data-name="Grupo 3" transform="translate(0 0)">
+          <path id="União_1-2" data-name="União 1" d="M11.472.535v1.6H0V4.81H11.472v1.6a.534.534,0,0,0,.854.428L16.242,3.9a.535.535,0,0,0,0-.855L12.326.108A.526.526,0,0,0,12.007,0,.534.534,0,0,0,11.472.535Z" transform="translate(16.455 6.949) rotate(180)" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
