@@ -51,6 +51,7 @@ function selectRow(index, lastSelected) {
   let rows = document.getElementsByTagName("li");
   rows[lastSelected].classList.remove("select");
   rows[index].classList.add("select");
+  rows[index].scrollIntoView(false);
 }
 
 function getTabFocus({ tabId, windowId }) {
