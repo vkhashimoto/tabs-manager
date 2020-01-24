@@ -22,7 +22,7 @@
       ],
       "js": [
         "content.js",
-        "script.js"
+        "script2.js"
       ],
       "run_at": "document_end"
     }

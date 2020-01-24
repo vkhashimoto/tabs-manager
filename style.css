@@ -5,12 +5,16 @@
 
 
 body {
-  min-height: 480px;
+  height: 600px;
   max-height: 600px;
+  width: 600px;
+  min-width: 600px;
   font-family: 'Open Sans', sans-serif;
   margin: 0;
   position: relative;
   background-color: #F5F5F5;
+  border: none;
+  padding: 0;
 }
 
 .title-container {
@@ -26,6 +30,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .title-img {

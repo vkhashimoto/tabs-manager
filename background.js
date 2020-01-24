@@ -26,10 +26,10 @@ function newWindow() {
   createData = {
     url: "popup.html",
     type: "popup",
-    left: Math.round(maxWidth / 4),
+    left: Math.round((maxWidth / 2) - 307),
     top: Math.round(maxHeight / 4),
-    width: Math.round(maxWidth / 2),
-    height: Math.round(maxHeight / 1.5),
+    width: 614,
+    height: Math.round((maxHeight / 2)),
     focused: true
   };
   chrome.windows.create(createData, (window) => {
