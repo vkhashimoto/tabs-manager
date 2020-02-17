@@ -72,7 +72,7 @@ chrome.windows.getAll({ populate: true }, function (windows) {
       chromePages.push({
         "pageTitle": tab.title,
         "link": tab.url,
-        "icon": tab.favIconUrl,
+        "icon": tab.favIconUrl ? tab.favIconUrl : 'empty-img.svg',
         "tabId": tab.id,
         "windowId": tab.windowId
       });
