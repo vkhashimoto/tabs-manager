@@ -1,176 +1,111 @@
-var foundTabs = [];
-var input = document.getElementById("searchBar");
-
+var chromePages = [];
+var result = [];
 var selectedRow = 0;
 
-input.addEventListener('input', searchTab);
-document.addEventListener('keyup', function onEvent(e) {
-  if (e.keyCode === 13) {
-    goToTab();
-  }
-});
+const pagesList = document.getElementById("pages-list-id");
 
-document.addEventListener('keyup', function (e) {
-  let dir;
-  if (e.keyCode === 38 || e.keyCode === 40) {
-    if (e.keyCode === 38) { // up
-      dir = "up";
-    } else if (e.keyCode === 40) { //down
-      dir = "down";
-    }
-    selectRow(dir);
-  }
-});
 
-function goToTab() {
-  let table = document.getElementById("table");
-  let trs = table.getElementsByClassName("tab-exists");
-  console.log("Going to row: " + selectedRow);
+const input = document.getElementById("searchBar");
 
-  if (trs.length == 1) {
-    let tabId = trs[0].getElementsByTagName("td")[0].innerText;
-    let windowId = trs[0].getElementsByTagName("td")[3].innerText
-    chrome.tabs.update(parseInt(tabId), { active: true });
-    chrome.windows.update(parseInt(windowId), { focused: true });
-    selectedRow = 0;
-  } else {
-    let tabId = trs[selectedRow].getElementsByTagName("td")[0].innerText;
-    let windowId = trs[selectedRow].getElementsByTagName("td")[3].innerText
-    chrome.tabs.update(parseInt(tabId), { active: true });
-    chrome.windows.update(parseInt(windowId), { focused: true });
-  }
-}
-
-function selectRow(direction) {
-  let maxLenght = document.getElementById("table").getElementsByClassName("tab-exists").length;
-  let lastRow = selectedRow;
-  if (direction === "up") {
-    if (selectedRow === 0) {
-      selectedRow = maxLenght - 1;
-    } else {
-      selectedRow--;
-    }
-  } else if (direction === "down") {
-    if (selectedRow === maxLenght - 1) {
-      selectedRow = 0;
-    } else {
-      selectedRow++;
-    }
-  }
-  let tr = document.getElementById("table").getElementsByClassName("tab-exists")[selectedRow];
-  clearPreviousSelection(lastRow);
-  tr.style.backgroundColor = "red";
-}
-
-function clearPreviousSelection(lastRow) {
-  document.getElementById("table").getElementsByClassName("tab-exists")[lastRow].style.backgroundColor = "";
-}
-
-function searchTab(e) {
+// update the list every input made by the user
+input.addEventListener("input", (e) => {
+  selectedRow = 0;
+  clearList();
   let searchTerm = e.target.value.toUpperCase();
-  let table = document.getElementById("table");
-  let trs = table.getElementsByTagName("tr");
-  let td, tds;
-  let tdText;
-
-  for (let index = 0; index < trs.length; index++) {
-    tds = trs[index].getElementsByTagName("td");
-    for (let tdIndex = 0; tdIndex < tds.length; tdIndex++) {
-      td = tds[tdIndex];
-      if (td) {
-        tdText = td.textContent || td.innerText;
-        tdText = tdText.toUpperCase();
-        if (tdText.includes(searchTerm)) {
-          trs[index].style.display = "";
-          trs[index].classList.add("tab-exists");
-          break;
-        } else {
-          trs[index].style.display = "none";
-          trs[index].classList.remove("tab-exists");
-          continue;
-        }
-      }
-    }
-  }
-
-}
-
-chrome.windows.getAll({ populate: true }, function (windows) {
-  cleanTable();
-  windows.forEach(function (window) {
-    populate(window.id, window.tabs);
-  });
+  populate(chromePages.filter(page => page.pageTitle.toUpperCase().includes(searchTerm)));
 });
 
-function populate(windowId, tabs) {
-
-  let table = document.getElementById("table");
-
-  tabs.forEach(tab => {
-    var tr = document.createElement('tr');
-    tr.classList.add("tab-exists");
-    var td = document.createElement('td');
-    let id = tab.id;
-    let title = tab.title;
-    let url = tab.url;
-    foundTabs.push({ id, title, url });
-    td.appendChild(document.createTextNode(id));
-    td.classList.add("id");
-    tr.appendChild(td);
-    td = document.createElement('td');
-    td.appendChild(document.createTextNode(title));
-    td.classList.add("title");
-    tr.appendChild(td);
-    td = document.createElement('td');
-    td.appendChild(document.createTextNode(url));
-    td.classList.add("url");
-    tr.appendChild(td);
-
-    // window id
-    td = document.createElement("td");
-    td.appendChild(document.createTextNode(windowId));
-    tr.appendChild(td);
-
-    table.querySelector("#tableBody").appendChild(tr);
-  });
-  if (foundTabs.length > 0) {
-    let tr = document.getElementById("table").getElementsByClassName("tab-exists")[0];
-    tr.style.backgroundColor = "red";
+// pressed enter
+document.addEventListener('keyup', (e) => {
+  switch (e.keyCode) {
+    case 13:
+      getTabFocus(result[selectedRow]);
+      break;
+    case 38:
+      rowSelector("up");
+      break;
+    case 40:
+      rowSelector("down");
+      break
+    case 27:
+      closePopupWindows();
+      break;
   }
+});
+
+function rowSelector(dir) {
+  let rowCount = document.getElementsByTagName("li").length - 1;
+  let lastSelected = selectedRow;
+  if (dir === "up") {
+    if (selectedRow == 0) selectedRow = rowCount;
+    else selectedRow--;
+  } else if (dir === "down") {
+    if (selectedRow == rowCount) selectedRow = 0;
+    else selectedRow++;
+  }
+
+  selectRow(selectedRow, lastSelected);
 }
 
-function cleanTable() {
-  let existingTable = document.getElementById("table");
-  let newTable = generateNewTable();
-  existingTable.replaceWith(newTable);
+function selectRow(index, lastSelected) {
+  let rows = document.getElementsByTagName("li");
+  rows[lastSelected].classList.remove("select");
+  rows[index].classList.add("select");
+  rows[index].scrollIntoView(false);
 }
 
-function generateNewTable() {
-  let newTable = document.createElement("table");
-  newTable.id = "table";
-  let newTableBody = document.createElement("tbody");
-  newTableBody.id = "tableBody";
+function getTabFocus({ tabId, windowId }) {
+  chrome.tabs.update(parseInt(tabId), { active: true });
+  chrome.windows.update(parseInt(windowId), { focused: true });
+  closePopupWindows();
+}
 
-  let tr = document.createElement("tr");
+function closePopupWindows() {
+  chrome.storage.local.get(["popupWindowId"], function (result) {
+    chrome.storage.local.remove(["popupWindowId"]);
+    chrome.windows.remove(parseInt(result.popupWindowId));
+  });
+}
+chrome.windows.getAll({ populate: true }, function (windows) {
+  windows.forEach((window) => {
+    window.tabs.forEach((tab) => {
+      chromePages.push({
+        "pageTitle": tab.title,
+        "link": tab.url,
+        "icon": tab.favIconUrl ? tab.favIconUrl : 'empty-img.svg',
+        "tabId": tab.id,
+        "windowId": tab.windowId
+      });
+    });
+  });
+  populate(chromePages);
+  // when open the popup, the first item is selected
+  selectRow(selectedRow, 1);
+});
 
-  // ID Column
-  let th = document.createElement("th");
-  th.appendChild(document.createTextNode("ID"));
-  tr.appendChild(th);
+function createListItem({ pageTitle, icon, link }, resultIndex) {
+  var li = document.createElement("LI");
+  li.innerHTML = `
+        <div class='img' style='background-image: url(${icon});'></div> 
+        <div>
+            <h3>${pageTitle}</h3>
+            <h4>${link}</h4>
+         </div>`;
+  li.addEventListener('click', function (event) {
+    openOnClick(resultIndex);
+  });
+  pagesList.appendChild(li);
+}
 
-  // Title Column
-  th = document.createElement("th");
-  th.appendChild(document.createTextNode("Title"));
-  tr.appendChild(th);
+function clearList() {
+  pagesList.innerHTML = "";
+}
 
-  // URL Column
-  th = document.createElement("th");
-  th.appendChild(document.createTextNode("URL"));
-  tr.appendChild(th);
+function populate(pages) {
+  result = pages;
+  pages.forEach((page, index) => createListItem(page, index));
+}
 
-
-  newTableBody.appendChild(tr);
-  newTable.appendChild(newTableBody);
-
-  return newTable;
+function openOnClick(resultIndex) {
+  getTabFocus(result[resultIndex]);
 }
